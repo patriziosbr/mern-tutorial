@@ -16,8 +16,13 @@ function Header() {
 
   return (
     <header className='header'>
-      <div className='logo'>
-        <Link to='/'>GoalSetter</Link>
+      <div style={{display:'flex'}}>
+        <div style={{marginRight:'10px'}}>
+          <Link to='/'>GoalSetter</Link>
+        </div>
+        <div style={{marginRight:'10px'}}>
+          <Link to='/add-event'>Add Event</Link>
+        </div>
       </div>
       <ul>
         {user ? (
