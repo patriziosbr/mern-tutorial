@@ -34,14 +34,14 @@ const updateGoal = asyncHandler(async (req, res) => {
     if(!goal) {
         throw new Error("add text in body")
     }
-    const user = await User.findById(req.user.id) 
+
     //check user
-    if(!user) {
+    if(!req.user) {
         res.status(401)
         throw new Error("user not found")
     }
     //check if user is owner
-    if(goal.user.toString() !== user.id){
+    if(goal.user.toString() !== req.user.id){
         res.status(401)
         throw new Error("user not authorized")
     }
@@ -56,14 +56,14 @@ const deleteGoal = asyncHandler(async (req, res) => {
     if(!goal) {
         throw new Error("goal not found")
     }
-    const user = await User.findById(req.user.id) 
+
     //check user
-    if(!user) {
+    if(!req.user) {
         res.status(401)
         throw new Error("user not found")
     }
     //check if user is owner
-    if(goal.user.toString() !== user.id){
+    if(goal.user.toString() !== req.user.id){
         res.status(401)
         throw new Error("user not authorized")
     }
