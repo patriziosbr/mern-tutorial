@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useDispatch } from 'react-redux'
-import { createEvent } from '../features/events/eventSlice'
+import { createEvent, updateEvent, reset } from '../features/events/eventSlice'
 
 
 function EventForm() {
@@ -20,9 +20,7 @@ function EventForm() {
     bodyEvent:""
   })
   const {emailReciever, startAt, endAt, hourStart, hourEnd, title, bodyEvent} = formData;
-  
   const dispatch = useDispatch()
-
   const [text, setText] = useState('Ciao, la tua prenotazione è confermata per il giorno alle ore ');
 
   const onChange = (e) => {
@@ -30,9 +28,6 @@ function EventForm() {
         ...prevState,
       [e.target.name]: e.target.value
     }))
-    //   const updatedText = `Ciao ${formData.emailReciever}, 
-    //   la tua prenotazione è confermata per il giorno ${formData.startAt} alle ore ${formData.hourStart}`;
-    //   setText(updatedText);
   }
 
   useEffect(() => {
@@ -43,27 +38,39 @@ function EventForm() {
 
  
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
 
-    dispatch(createEvent( formData ))
-    console.log(formData);
-    console.log("forse è andata");
+    let eventId;
+    await dispatch(createEvent( formData )).then((result)=>{
+      eventId = result.payload._id
+    })
 
     const fileIcs = generateIcsFile();
-    sendMail(fileIcs, emailReciever, title, bodyEvent) 
+    sendMail(fileIcs, emailReciever, title, bodyEvent)
+
+    const data = {
+      eventId,
+      emailSent: true
+    }
+    // // Send mail completed, update emailSent field in the database
+    await dispatch(updateEvent(data));
 
     //Empty form after send form
-    setfromData({
-      emailReciever: "",
-      startAt: "",
-      endAt: "",
-      hourStart: "",
-      hourEnd: "",
-      title: "",
-      bodyEvent: "",
-      template: ""
-    })
+
+    return () => {
+      dispatch(reset())
+    }
+    // setfromData({
+    //   emailReciever: "",
+    //   startAt: "",
+    //   endAt: "",
+    //   hourStart: "",
+    //   hourEnd: "",
+    //   title: "",
+    //   bodyEvent: "",
+    //   template: ""
+    // })
   }
 
   const event = {
