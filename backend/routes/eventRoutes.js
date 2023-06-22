@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getEvent, setEvent, updateEvent, deleteEvent  } = require('../controllers/eventController');
+const { getEvents, setEvent, updateEvent, deleteEvent  } = require('../controllers/eventController');
 const { protect } = require('../middleware/authMiddleware')
 
-router.route('/').get(protect, getEvent).post(protect, setEvent) //shortcut
+router.route('/').get(protect, getEvents).post(protect, setEvent) //shortcut
 router.route('/:id').put(protect, updateEvent).delete(protect, deleteEvent) //shortcut
 
 // // router.get('/', getGoals)

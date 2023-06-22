@@ -1,5 +1,5 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout, reset } from '../features/auth/authSlice'
 
@@ -18,10 +18,13 @@ function Header() {
     <header className='header'>
       <div style={{display:'flex'}}>
         <div style={{marginRight:'10px'}}>
-          <Link to='/'>GoalSetter</Link>
+          <NavLink activeclassname="active" to='/'>GoalSetter</NavLink>
         </div>
         <div style={{marginRight:'10px'}}>
-          <Link to='/add-event'>Add Event</Link>
+          <NavLink activeclassname="active" to='/add-event'>Add Event</NavLink>
+        </div>
+        <div style={{marginRight:'10px'}}>
+          <NavLink activeclassname="active" to='/events'>Events</NavLink>
         </div>
       </div>
       <ul>
@@ -34,14 +37,14 @@ function Header() {
         ) : (
           <>
             <li>
-              <Link to='/login'>
+              <NavLink to='/login'>
                 <FaSignInAlt /> Login
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to='/register'>
+              <NavLink to='/register'>
                 <FaUser /> Register
-              </Link>
+              </NavLink>
             </li>
           </>
         )}

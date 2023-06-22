@@ -6,7 +6,7 @@ const User = require("../model/userModel")
 //@desc get goals
 //@route GET /api/event
 //@access Private
-const getEvent= asyncHandler(async (req, res) => {
+const getEvents= asyncHandler(async (req, res) => {
     const event = await Event.find({user: req.user.id})
     res.status(200).json(event)
 })
@@ -94,7 +94,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-    getEvent,
+    getEvents,
     setEvent,
     updateEvent,
     deleteEvent

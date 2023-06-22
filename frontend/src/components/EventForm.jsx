@@ -5,7 +5,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useDispatch } from 'react-redux'
-import { createEvent, updateEvent, reset } from '../features/events/eventSlice'
+import { createEvent, updateEvent } from '../features/events/eventSlice'
+import { toast } from 'react-toastify'
 
 
 function EventForm() {
@@ -57,20 +58,16 @@ function EventForm() {
     await dispatch(updateEvent(data));
 
     //Empty form after send form
-
-    return () => {
-      dispatch(reset())
-    }
-    // setfromData({
-    //   emailReciever: "",
-    //   startAt: "",
-    //   endAt: "",
-    //   hourStart: "",
-    //   hourEnd: "",
-    //   title: "",
-    //   bodyEvent: "",
-    //   template: ""
-    // })
+    setfromData({
+      emailReciever: "",
+      startAt: "",
+      endAt: "",
+      hourStart: "",
+      hourEnd: "",
+      title: "",
+      bodyEvent: "",
+      template: ""
+    })
   }
 
   const event = {
@@ -98,7 +95,7 @@ END:VEVENT
 END:VCALENDAR`;
 
 const base64Data = btoa(unescape(encodeURIComponent(icsContent)));
-console.log(base64Data);
+// console.log(base64Data);
 return base64Data
 };
 
@@ -125,7 +122,7 @@ return `${year}${month}${day}T${hours}${minutes}${seconds}`;
     window.Email.send({
       SecureToken: "40e5bd95-02f3-458c-b6c2-9c1969a23e2a",
       To: emailReciever,
-      From: "Affitto turistico tommasoversetto@gmail.com",
+      From: "Notify Beta - tommasoversetto@gmail.com",
       Subject: title,
       Body: bodyEvent,
       Attachments: [
@@ -134,8 +131,10 @@ return `${year}${month}${day}T${hours}${minutes}${seconds}`;
           data: file
         }
       ]
-    }).then(
-      message => alert(message)
+    }).then((message)=>{
+      toast.success(message)
+      // console.log(message)
+    }
     );
   }
 

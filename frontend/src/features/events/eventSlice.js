@@ -9,6 +9,26 @@ const initialState = {
   message: '',
 }
 
+// Get user events
+export const getEvents = createAsyncThunk(
+  'event/getAll',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await eventService.getEvents(token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+
 // Create new event
 export const createEvent = createAsyncThunk(
   'event/create',
@@ -33,11 +53,7 @@ export const updateEvent = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      console.log('State:', state);
-
       const token = state.auth.user.token;
-      console.log('Token:', token);
-
       const eventId = data.eventId; // Assuming you pass the eventId as part of the data parameter
       const eventData = {
         ...data.eventData, // Assuming you pass other event data fields in eventData
@@ -95,6 +111,19 @@ export const eventSlice = createSlice({
         }
       })
       .addCase(updateEvent.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getEvents.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getEvents.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.events = action.payload
+      })
+      .addCase(getEvents.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload

@@ -5,7 +5,8 @@ import Header from './components/Header'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import EventForm from './pages/EventForm'
+import AddEvent from "./pages/AddEvent"
+import Events from "./pages/Events"
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             <Route path='/' element={<Dashboard />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/add-event' element={<EventForm />} />
+            <Route path='/add-event' element={<AddEvent />} />
+            <Route path='/events' element={<Events />} />
           </Routes>
         </div>
       </Router>
