@@ -12,6 +12,13 @@ const getEvents = async (token) => {
 
   const response = await axios.get(API_URL, config)
 
+  response.data.forEach(event => {
+    updateDateProperty(event, "startAt")
+    updateDateProperty(event, "endAt")
+    updateDateProperty(event, "createdAt")
+    updateDateProperty(event, "updatedAt")
+  });
+
   return response.data
 }
 
@@ -50,3 +57,16 @@ const eventService = {
 }
 
 export default eventService
+
+
+function updateDateProperty(obj, property) {
+  if (obj[property]) {
+    const tempDate = new Date(obj[property]);
+
+    if(property === "createdAt" || property === "updatedAt") {
+      obj[property] = tempDate.toLocaleDateString() + " " + tempDate.getHours() + ":" + tempDate.getMinutes() ;
+    } else {
+      obj[property] = tempDate.toLocaleDateString();
+    }
+  }
+}

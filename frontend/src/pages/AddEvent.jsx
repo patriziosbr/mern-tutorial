@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import EventForm from '../components/EventForm'
 import Spinner from '../components/Spinner'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -32,11 +35,17 @@ function Dashboard() {
 
   return (
     <>
-      <section className='heading'>
-        <h1>Welcome {user && user.name}</h1>
-      </section>
+      <Container style={{marginTop: "80px"}}>
+        <Row>
+          <Col>
+            <section className='heading'>
+              <h1>Welcome {user && user.name}</h1>
+            </section>
 
-      <EventForm/>
+            <EventForm/>
+          </Col>
+        </Row>
+      </Container>
     </>
   )
 }

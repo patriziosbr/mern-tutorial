@@ -2,7 +2,11 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Spinner from '../components/Spinner'
+import WithHeaderAndQuoteExample from '../components/WithHeaderAndQuoteExample'
 import { getEvents, reset } from '../features/events/eventSlice'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -34,35 +38,26 @@ function Dashboard() {
   }
   return (
     <>
-      <section className='heading'>
-        <h1>Welcome {user && user.name}</h1>
-        <p>Event Dashboard</p>
-      </section>
+      <Container style={{marginTop: "80px"}}>
+        <Row>
+          <Col>
+            <section className='heading'>
+              <h1>Welcome {user && user.name}</h1>
+              <p>Event Dashboard</p>
+            </section>
 
-      <section className='content'>
-        {events.length > 0 ? (
-          <div>
+            <section className=''>
             {events.map((event) => (
-              <div key={event._id}>
-                <p><b>{event.title}</b></p>
-                <p>{event.email}</p>
-                <p>{event.emailSent}</p>
-                <p>{event.emailReciever}</p>
-                <p>{event.startAt}</p>
-                <p>{event.endAt}</p>
-                <p>{event.hourStart}</p>
-                <p>{event.hourEnd}</p>
-                <p>{event.title}</p>
-                <p>{event.bodyEvent}</p>
-                <p>{event.createdAt}</p>
-                <p>{event.updatedAt}</p>
-              </div>
+              <WithHeaderAndQuoteExample event={event}/>
+
             ))}
-          </div>
-        ) : (
-          <h3>You have not set any events</h3>
-        )}
-      </section>
+            </section>
+          </Col>
+        </Row>
+      </Container>
+
+
+
 
     </>
   )
